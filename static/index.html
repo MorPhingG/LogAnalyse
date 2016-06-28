@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>查看日志</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/vue.resource/0.9.1/vue-resource.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+        <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/static/index.css">
+  </head>
+
+  <body>
+
+
+<div id="container" class="container">
+  <form action="/" method="post" name="query" class="row">
+    <input type="text" name="searchQuery" class="col-xs-5">
+    <input type="submit" value="Search" class="col-xs-3 btn btn-primary">
+  </form>
+  <button @click="postMessage" class = "col-xs-3 btn btn-primary">True Search</button>
+  <hr />
+  <div class="panel panel-default">
+    <div class="panel-heading">日志</div>
+  <table  class="table">
+    <tbody>
+    <th v-for="column in columns">{{column}}</th>
+    </tbody>
+    <tr v-for="row in data">
+      <td v-for="(v,k) in row">{{v}}</td>
+    </tr>
+  </table>
+    </div>
+  <nav>
+  <ul class="pagination">
+    <li>
+      <a href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li>
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+  <button @click="updateMessage">get</button>
+  <button @click="postMessage">post</button>
+</div>
+<script type="text/javascript">
+
+
+var demo = new Vue({
+  el: '#container',
+  data: {
+    searchQuery: '{{searchdata}}',
+    data :[
+  {
+    "nickname": "Yu",
+    "pid": 10,
+    "name": "abc",
+    "id": 0
+  },
+  {
+    "nickname": "Xu",
+    "pid": 20,
+    "name": "cba",
+    "id": 1
+  },
+  {
+    "nickname": "solo",
+    "pid": 30,
+    "name": "kda",
+    "id": 2
+  }
+]
+  },computed:{
+    columns:function(){
+      return Object.keys(this.data[0])
+  }
+  },
+  methods: {
+    updateMessage: function () {
+      var self = this;
+      this.$http.get('/orders').then(function (res) {
+        console.log(res.data);
+        try {
+          self.data = JSON.parse(res.data);
+        } catch (e) {
+          console.log(e);
+          alert("出错了");
+        }
+      }, function (esrr) {
+        console.error(err);
+        alert("出错了");
+      });
+    },
+    postMessage: function () {
+      var self = this;
+      this.$http.post('/orders/order?id=4').then(function (res) {
+        console.log(res.data);
+        try {
+          self.data = JSON.parse(res.data);
+        } catch (e) {
+          console.log(e);
+          alert("出错了");
+        }
+      });
+    }
+  },
+  created:function(){
+    this.updateMessage();
+  }
+})
+</script>
+
+  </body>
+</html>
