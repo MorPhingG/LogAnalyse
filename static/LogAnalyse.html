@@ -7,36 +7,32 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>查看日志</title>
-
     <!-- Bootstrap core CSS -->
     <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
-
-
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/vue.resource/0.9.1/vue-resource.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/vue.resource/0.9.1/vue-resource.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
-        <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-<link rel="stylesheet" type="text/css" href="/static/index.css">
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <!--my javascript-->
+    <script type="text/javascript" src="LogAnalyse.js"></script>
   </head>
-
   <body>
-
-
 <div id="container" class="container">
-  <form action="/" method="post" name="query" class="row">
-    <input type="text" name="searchQuery" class="col-xs-5">
-    <input type="submit" value="Search" class="col-xs-3 btn btn-primary">
-  </form>
-  <button @click="postMessage" class = "col-xs-3 btn btn-primary">True Search</button>
-  <hr />
+  <br/>
+  <div class="form-inline center">
+  <button @click="postMessage" class = "col-xs-2 col-md-offset-1 btn btn-primary">Search Order</button>
+  <button @click="postMessage" class = "col-xs-2 btn btn-success" disabled="disabled">Search Order</button>
+  <input type="text" id="searchOrder" v-model='searchQuery' class = "col-xs-2 form-control">
+  <button @click="postMessage" class = "col-xs-2 btn btn-info" disabled="disabled">Search Order</button>
+  <button @click="postMessage" class = "col-xs-2 btn btn-warning" disabled="disabled">Search Order</button>
+  </div>
+  <hr/>
   <div class="panel panel-default">
     <div class="panel-heading">日志</div>
   <table  class="table">
@@ -67,16 +63,14 @@
     </li>
   </ul>
 </nav>
-  <button @click="updateMessage">get</button>
-  <button @click="postMessage">post</button>
 </div>
-<script type="text/javascript">
 
 
-var demo = new Vue({
+  <script>
+    var demo = new Vue({
   el: '#container',
   data: {
-    searchQuery: '{{searchdata}}',
+    searchQuery: '',
     data :[
   {
     "nickname": "Yu",
@@ -120,9 +114,11 @@ var demo = new Vue({
     },
     postMessage: function () {
       var self = this;
-      this.$http.post('/orders/order?id=4').then(function (res) {
+      self.searchQuery = document.getElementById("searchOrder").value
+      this.$http.post('/orders/order?id='+self.searchQuery).then(function (res) {
         console.log(res.data);
         try {
+
           self.data = JSON.parse(res.data);
         } catch (e) {
           console.log(e);
@@ -135,7 +131,6 @@ var demo = new Vue({
     this.updateMessage();
   }
 })
-</script>
-
+  </script>
   </body>
 </html>

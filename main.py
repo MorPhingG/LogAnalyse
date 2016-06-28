@@ -8,14 +8,14 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 # get log
-# def getlog(filename):
-#     allText = open(filename).read( )
-#     reg = r'([^\]]+][^\[]+)\[EVENT\]([\w]+)\s*({.+)'
-#     logRe = re.compile(reg)
-#     logList = re.findall(logRe,allText)
-#     return logList
-#
-# logList = getlog('log.txt')
+def getlog(filename):
+    allText = open(filename).read( )
+    reg = r'([^\]]+][^\[]+)\[EVENT\]([\w]+)\s*({.+)'
+    logRe = re.compile(reg)
+    logList = re.findall(logRe,allText)
+    return logList
+
+logList = getlog('LogOrder.csv')
 
 app = Flask(__name__)
 
@@ -77,7 +77,7 @@ def index():
         result = to_json(cu.fetchall())
         return(result)
     print("hello")
-    return app.send_static_file('index.html')
+    return app.send_static_file('LogAnalyse.html')
 
 app._static_folder="static"
 
