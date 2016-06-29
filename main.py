@@ -1,7 +1,8 @@
 import re
 import sqlite3
-from flask import Flask, request
 import json
+import xlrd
+from flask import Flask, request
 from sqlalchemy import Column, String, create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -14,6 +15,31 @@ def getlog(filename):
     logRe = re.compile(reg)
     logList = re.findall(logRe,allText)
     return logList
+
+def read_xlsx(filename):
+    workbook = xlrd.open_workbook(filename)
+    booksheet = workbook.sheet_by_index(3)
+    p = []
+    for row in range(booksheet.nrows):
+            row_data = []
+            for col in range(booksheet.ncols):
+                    cel = booksheet.cell(row, col)
+                    val = cel.value
+                    try:
+                            val = cel.value
+                            val = re.sub(r'\s+', '', val)
+                    except:
+                            pass
+
+                    if type(val) == float:
+                        val = int(val)
+                    else:
+                        val = str( val )
+                    row_data.append(val)
+            p.append(row_data)
+    return  p
+logListT = read_xlsx('logOrder.xlsx')
+
 
 logList = getlog('LogOrder.csv')
 
