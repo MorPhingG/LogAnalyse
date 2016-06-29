@@ -17,10 +17,14 @@
     <![endif]-->
     <script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/vue.resource/0.9.1/vue-resource.min.js"></script>
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
     <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="jqueryui/style.css">
     <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue-strap/1.0.11/vue-strap.js"></script>
     <!--my javascript-->
-    <script type="text/javascript" src="LogAnalyse.js"></script>
+    <script type="text/javascript" src="/static/LogAnalyse.js"></script>
   </head>
   <body>
 <div id="container" class="container">
@@ -33,6 +37,7 @@
   <button @click="postMessage" class = "col-xs-2 btn btn-warning" disabled="disabled">Search Order</button>
   </div>
   <hr/>
+
   <div class="panel panel-default">
     <div class="panel-heading">日志</div>
   <table  class="table">
@@ -65,32 +70,12 @@
 </nav>
 </div>
 
-
   <script>
     var demo = new Vue({
   el: '#container',
   data: {
     searchQuery: '',
-    data :[
-  {
-    "nickname": "Yu",
-    "pid": 10,
-    "name": "abc",
-    "id": 0
-  },
-  {
-    "nickname": "Xu",
-    "pid": 20,
-    "name": "cba",
-    "id": 1
-  },
-  {
-    "nickname": "solo",
-    "pid": 30,
-    "name": "kda",
-    "id": 2
-  }
-]
+    data :['']
   },computed:{
     columns:function(){
       return Object.keys(this.data[0])
@@ -115,7 +100,7 @@
     postMessage: function () {
       var self = this;
       self.searchQuery = document.getElementById("searchOrder").value
-      this.$http.post('/orders/order?id='+self.searchQuery).then(function (res) {
+      this.$http.post('/orders/order?userId='+self.searchQuery).then(function (res) {
         console.log(res.data);
         try {
 

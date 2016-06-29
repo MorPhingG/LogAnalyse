@@ -49,7 +49,6 @@ var demo = new Vue({
       this.$http.post('/orders/order?id='+self.searchQuery).then(function (res) {
         console.log(res.data);
         try {
-
           self.data = JSON.parse(res.data);
         } catch (e) {
           console.log(e);
