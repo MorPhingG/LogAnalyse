@@ -1,9 +1,35 @@
 body {
   font-family: Helvetica Neue, Arial, sans-serif;
   font-size: 14px;
-  color: #444;
+
+}
+ .panel.panel-accordion .panel-heading{
+    padding-top: 0;
+    padding-bottom:0;
+    /*color:red;*/
 }
 
-#search {
-  margin-bottom: 10px;
+.panel.panel-accordion .panel-heading table{
+    margin:0;
+    /*color:red;*/
+}
+
+.panel.panel-accordion .panel-heading{
+    cursor:pointer;
+    /*color:red;*/
+}
+
+.panel.panel-accordion{
+    transition: all 1s ease-out;
+    -webkit-transition: all 1s ease-out;
+    overflow-y:hidden;
+    height:auto;
+}
+
+.panel.panel-accordion.dontshow{
+    height:37px;
+}
+
+.panel-accordion .details{
+    padding:10px;
 }
