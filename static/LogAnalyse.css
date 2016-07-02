@@ -15,13 +15,13 @@ body {
 }
 
 .panel.panel-accordion .panel-heading{
-    cursor:pointer;
-    /*color:red;*/
+    transition: all 2s ease-out 1s;
+    /*cursor:pointer;*/
 }
 
 .panel.panel-accordion{
-    transition: all 1s ease-out;
-    -webkit-transition: all 1s ease-out;
+    transition: all 1s ease-in-out;
+    /*-webkit-transition: all 1s ease-out;*/
     overflow-y:hidden;
     height:auto;
 }

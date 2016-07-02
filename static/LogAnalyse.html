@@ -26,32 +26,50 @@
     <script src="https://cdn.bootcss.com/vue-strap/1.0.11/vue-strap.js"></script>
     <!--my javascript-->
     <!--<script type="text/javascript" src="/static/LogAnalyse.js"></script>-->
+    <script>
+  $('#searchClear').on('click', function () {
+    alert("abc")
+    document.getElementById("searchOrder").value="";
+  })
+</script>
   </head>
   <body>
 <div id="myContainer" class="container">
   <br/>
-  <div class="form-inline row">
+  <div class="form-inline row ">
     <input type="text" id="searchOrder" v-model='searchQuery' class = "col-xs-6 form-control" placeholder="输入订单编号/用户id/鱼卡编号">
-  <button @click="postMessage" class = "col-xs-2 col-md-offset-1 btn btn-primary">搜订单编号</button>
+    <button @click="clearMessage" id="searchClear" class="col-xs-1 btn btn-warning">清空搜索栏</button>
+    <button @click="postMessage" class = "col-xs-2 btn btn-success">搜订单编号</button>
   <!--<button @click="postMessage" class = "col-xs-2 btn btn-success" disabled="disabled">Search Order</button>-->
   <!--<button @click="postMessage" class = "col-xs-2 btn btn-info" disabled="disabled">Search Order</button>-->
   <!--<button @click="postMessage" class = "col-xs-2 btn btn-warning" disabled="disabled">Search Order</button>-->
   </div>
   <hr/>
 
+  <div class="panel panel-default">
+    <div class="panel-heading">日志</div>
+    <table class="table">
+      <tr>
+        <th style="width: 200px;padding-left: 20px;">订单状态</th>
+        <th style="width: 300px;padding-left: 20px;">订单创建时间</th>
+        <th style="width: 200px;">用户ID</th>
+        <th style="width: 200px;">订单号码</th>
+    </tr></table>
 
 
   <div class="panel panel-default panel-accordion" v-for="(row,index) in data"  v-bind:class="{'dontshow':index!=active}">
-    <div class="panel-heading" @click="active=index"><table  class="table" ><tr>
-      <td><span class="label label-default">{{row.type}}</span></td>
-      <td><i class="glyphicon glyphicon-time"></i> {{row.createTime}}</td>
-      <td><i class="glyphicon glyphicon-user"></i> {{row.userId}}</td>
-      <td><i class="glyphicon glyphicon-list-alt"></i> {{row.orderCode}}</td>
-    </tr>
-    </table>
+    <div class="panel-heading" @click="active=index">
+      <table  class="table" >
+        <tr>
+      <td style="width: 200px;"><span class="label label-default">{{row.orderStatus}}</span></td>
+      <td style="width: 300px;"><i class="glyphicon glyphicon-time"></i> {{row.createTime}}</td>
+      <td style="width: 200px;"><i class="glyphicon glyphicon-user"></i> {{row.userId}}</td>
+      <td style="width: 200px;"><i class="glyphicon glyphicon-list-alt"></i> {{row.orderCode}}</td>
+      </tr>
+      </table>
     </div>
     <div class="details">
-    {{row.orderDetails}}</div>
+    {{row.orderInfo}}</div>
   <!--<table  class="table" >-->
     <!--<th v-for="column in columns">{{column | ignoreDetails}}</th>-->
     <!--<tbody v-for="row in data ">-->
@@ -89,6 +107,12 @@
   <!--</ul>-->
 <!--</nav>-->
 </div>
+<script>
+  function clear(){
+    alert("avas");
+    document.getElementById("searchOrder").value="";
+  }
+</script>
 
   <script>
     var myVue = new Vue({
@@ -139,6 +163,10 @@
         }
       });
         },
+        clearMessage: function(){
+          var self = this;
+          document.getElementById("searchOrder").value="";
+        }
 
       },
 
@@ -148,7 +176,7 @@
 
       filters: {
         ignoreDetails: function(title){
-          if(title!="orderDetails"){return title}
+          if(title!="orderInfo"){return title}
         },
         ignoreContent: function(content){
           if(content.length>40){return null}
