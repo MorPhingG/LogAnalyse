@@ -41,13 +41,13 @@ def toDict(logList):
         logDict[i] = eval(logList[i][2])
     return logDict
 
-def toListForSql(logList,logDict):
-    logListInsert = [[] for i in range(len(logList))]
-    for i in range(len(logList)):
-        logListInsert[i].append(logDict[i]['createTime'])
-        logListInsert[i].append(logDict[i]['orderStatus'])
-        logListInsert[i].append(logDict[i]['userId'])
-        logListInsert[i].append(logDict[i]['orderCode'])
+def toListForSql(logDict):
+    lenDict = len(logDict)
+    head = ['createTime', 'orderStatus', 'userId', 'orderCode']
+    logListInsert = [[] for i in range(lenDict)]
+    for i in range(lenDict):
+        for key in head:
+            logListInsert[i].append(logDict[i][key])
         logListInsert[i].append(str(logDict[i]))
     return logListInsert
 

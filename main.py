@@ -7,7 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 logList = getlog('boxfish-online-order-public.log')
 logDict = toDict(logList)
-logListInsert = toListForSql(logList, logDict)
+logListInsert = toListForSql(logDict)
 
 app = Flask(__name__)
 
@@ -74,6 +74,5 @@ def order():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
 
 

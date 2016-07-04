@@ -15,8 +15,8 @@ body {
 }
 
 .panel.panel-accordion .panel-heading{
-    transition: all 2s ease-out 1s;
-    /*cursor:pointer;*/
+    /*transition: all 2s ease-out 1s;*/
+    cursor:pointer;
 }
 
 .panel.panel-accordion{

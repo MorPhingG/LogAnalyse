@@ -1,111 +1,104 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>查看日志</title>
-    <!-- Bootstrap core CSS -->
-    <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="static/LogAnalyse.css" rel="stylesheet" />
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/vue.resource/0.9.1/vue-resource.min.js"></script>
-    <!--<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">-->
-    <!--<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>-->
-    <!--<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>-->
-    <!--<link rel="stylesheet" href="jqueryui/style.css">-->
-    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="https://cdn.bootcss.com/vue-strap/1.0.11/vue-strap.js"></script>
-    <!--my javascript-->
-    <!--<script type="text/javascript" src="/static/LogAnalyse.js"></script>-->
-    <script>
-  $('#searchClear').on('click', function () {
-    alert("abc")
-    document.getElementById("searchOrder").value="";
-  })
-</script>
-  </head>
-  <body>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>查看日志</title>
+  <!-- Bootstrap core CSS -->
+  <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="static/LogAnalyse.css" rel="stylesheet" />
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/vue.resource/0.9.1/vue-resource.min.js"></script>
+  <!--<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">-->
+  <!--<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>-->
+  <!--<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>-->
+  <!--<link rel="stylesheet" href="jqueryui/style.css">-->
+  <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://cdn.bootcss.com/vue-strap/1.0.11/vue-strap.js"></script>
+  <!--my javascript-->
+  <script src="static/LogAnalyse.js"></script>
+</head>
+<body>
 <div id="myContainer" class="container">
   <br/>
   <div class="form-inline row ">
     <input type="text" id="searchOrder" v-model='searchQuery' class = "col-xs-6 form-control" placeholder="输入订单编号/用户id/鱼卡编号">
     <button @click="clearMessage" id="searchClear" class="col-xs-1 btn btn-warning">清空搜索栏</button>
     <button @click="postMessage" class = "col-xs-2 btn btn-success">搜订单编号</button>
-  <!--<button @click="postMessage" class = "col-xs-2 btn btn-success" disabled="disabled">Search Order</button>-->
-  <!--<button @click="postMessage" class = "col-xs-2 btn btn-info" disabled="disabled">Search Order</button>-->
-  <!--<button @click="postMessage" class = "col-xs-2 btn btn-warning" disabled="disabled">Search Order</button>-->
+    <!--<button @click="postMessage" class = "col-xs-2 btn btn-success" disabled="disabled">Search Order</button>-->
+    <!--<button @click="postMessage" class = "col-xs-2 btn btn-info" disabled="disabled">Search Order</button>-->
+    <!--<button @click="postMessage" class = "col-xs-2 btn btn-warning" disabled="disabled">Search Order</button>-->
   </div>
   <hr/>
 
-  <div class="panel panel-default">
-    <div class="panel-heading">日志</div>
-    <table class="table">
+<div class="panel panel-default">
+  <div class="panel-heading">日志</div>
+  <table class="table">
+    <tr>
+      <th style="width: 200px;padding-left: 20px;">订单状态</th>
+      <th style="width: 300px;padding-left: 20px;">订单创建时间</th>
+      <th style="width: 200px;">用户ID</th>
+      <th style="width: 200px;">订单号码</th>
+  </tr></table>
+
+<div class="panel panel-default panel-accordion" v-for="(row,index) in data"  v-bind:class="{'dontshow':index!=active}">
+  <div class="panel-heading" @click="active=index">
+    <table  class="table" >
       <tr>
-        <th style="width: 200px;padding-left: 20px;">订单状态</th>
-        <th style="width: 300px;padding-left: 20px;">订单创建时间</th>
-        <th style="width: 200px;">用户ID</th>
-        <th style="width: 200px;">订单号码</th>
-    </tr></table>
-
-
-  <div class="panel panel-default panel-accordion" v-for="(row,index) in data"  v-bind:class="{'dontshow':index!=active}">
-    <div class="panel-heading" @click="active=index">
-      <table  class="table" >
-        <tr>
-      <td style="width: 200px;"><span class="label label-default">{{row.orderStatus}}</span></td>
-      <td style="width: 300px;"><i class="glyphicon glyphicon-time"></i> {{row.createTime}}</td>
-      <td style="width: 200px;"><i class="glyphicon glyphicon-user"></i> {{row.userId}}</td>
-      <td style="width: 200px;"><i class="glyphicon glyphicon-list-alt"></i> {{row.orderCode}}</td>
+        <td style="width: 200px;"><span class="label label-default">{{row.orderStatus}}</span></td>
+        <td style="width: 300px;"><i class="glyphicon glyphicon-time"></i> {{row.createTime}}</td>
+        <td style="width: 200px;"><i class="glyphicon glyphicon-user"></i> {{row.userId}}</td>
+        <td style="width: 200px;"><i class="glyphicon glyphicon-list-alt"></i> {{row.orderCode}}</td>
       </tr>
-      </table>
-    </div>
-    <div class="details">
+    </table>
+  </div>
+  <div class="details">
     {{row.orderInfo}}</div>
   <!--<table  class="table" >-->
-    <!--<th v-for="column in columns">{{column | ignoreDetails}}</th>-->
-    <!--<tbody v-for="row in data ">-->
+  <!--<th v-for="column in columns">{{column | ignoreDetails}}</th>-->
+  <!--<tbody v-for="row in data ">-->
 
-    <!--<tr>-->
-      <!--<h3><td v-for="(v,k) in row">{{v | ignoreContent}}</td></h3>-->
-    <!--</tr>-->
-    <!--<tr>-->
-      <!--<div><td colspan="5" v-for="(v,k) in row" v-if="(k=='orderDetails')">{{v}}</td></div>-->
-    <!--</tr>-->
+  <!--<tr>-->
+  <!--<h3><td v-for="(v,k) in row">{{v | ignoreContent}}</td></h3>-->
+  <!--</tr>-->
+  <!--<tr>-->
+  <!--<div><td colspan="5" v-for="(v,k) in row" v-if="(k=='orderDetails')">{{v}}</td></div>-->
+  <!--</tr>-->
 
 
-    <!--<tbody>-->
+  <!--<tbody>-->
   <!--</table>-->
-  </div>
-
+</div>
 
   <!--<nav>-->
   <!--<ul class="pagination">-->
-    <!--<li>-->
-      <!--<a href="#" aria-label="Previous">-->
-        <!--<span aria-hidden="true">&laquo;</span>-->
-      <!--</a>-->
-    <!--</li>-->
-    <!--<li><a href="#">1</a></li>-->
-    <!--<li><a href="#">2</a></li>-->
-    <!--<li><a href="#">3</a></li>-->
-    <!--<li><a href="#">4</a></li>-->
-    <!--<li><a href="#">5</a></li>-->
-    <!--<li>-->
-      <!--<a href="#" aria-label="Next">-->
-        <!--<span aria-hidden="true">&raquo;</span>-->
-      <!--</a>-->
-    <!--</li>-->
+  <!--<li>-->
+  <!--<a href="#" aria-label="Previous">-->
+  <!--<span aria-hidden="true">&laquo;</span>-->
+  <!--</a>-->
+  <!--</li>-->
+  <!--<li><a href="#">1</a></li>-->
+  <!--<li><a href="#">2</a></li>-->
+  <!--<li><a href="#">3</a></li>-->
+  <!--<li><a href="#">4</a></li>-->
+  <!--<li><a href="#">5</a></li>-->
+  <!--<li>-->
+  <!--<a href="#" aria-label="Next">-->
+  <!--<span aria-hidden="true">&raquo;</span>-->
+  <!--</a>-->
+  <!--</li>-->
   <!--</ul>-->
-<!--</nav>-->
+  <!--</nav>-->
+</div>
 </div>
 <script>
   function clear(){
@@ -114,84 +107,84 @@
   }
 </script>
 
-  <script>
-    var myVue = new Vue({
-      el: '#myContainer',
-      data: {
-        active:0,
-    searchQuery: '',
-    data :[''],
-      },
-      computed:{
-    columns:function(){
+<script>
+  var myVue = new Vue({
+    el: '#myContainer',
+    data: {
+      active:0,
+      searchQuery: '',
+      data :[''],
+    },
+    computed:{
+      columns:function(){
 //      console.log(Object.keys(this.data[0]));
-      return Object.keys(this.data[0])
-    }
-      },
+        return Object.keys(this.data[0])
+      }
+    },
 
-      methods: {
-        updateMessage: function () {
-      var self = this;
-      this.$http.get('/orders').then(function (res) {
+    methods: {
+      updateMessage: function () {
+        var self = this;
+        this.$http.get('/orders').then(function (res) {
 //        console.log(res.data);
-        try {
-          self.data = JSON.parse(res.data);
-          console.log(self.data[2].createTime);
-          self.data.sort(function(a,b){
-            return b.createTime>a.createTime?1:-1;
-          });
+          try {
+            self.data = JSON.parse(res.data);
+            console.log(self.data[2].createTime);
+            self.data.sort(function(a,b){
+              return b.createTime>a.createTime?1:-1;
+            });
 //          this.spliceData(this.data)
-        } catch (e) {
-          console.log(e);
+          } catch (e) {
+            console.log(e);
+            alert("出错了");
+          }
+        }, function (esrr) {
+          console.error(err);
           alert("出错了");
-        }
-      }, function (esrr) {
-        console.error(err);
-        alert("出错了");
-      });
-        },
-        postMessage: function () {
-          var self = this;
-      self.searchQuery = document.getElementById("searchOrder").value
-      this.$http.post('/orders/order?userId='+self.searchQuery).then(function (res) {
+        });
+      },
+      postMessage: function () {
+        var self = this;
+        self.searchQuery = document.getElementById("searchOrder").value
+        this.$http.post('/orders/order?userId='+self.searchQuery).then(function (res) {
 //        console.log(res.data);
-        try {
-          self.data = JSON.parse(res.data);
-        } catch (e) {
-          console.log(e);
-          alert("出错了");
-        }
-      });
-        },
-        clearMessage: function(){
-          var self = this;
-          document.getElementById("searchOrder").value="";
-        }
-
+          try {
+            self.data = JSON.parse(res.data);
+          } catch (e) {
+            console.log(e);
+            alert("出错了");
+          }
+        });
       },
-
-      created:function(){
-        this.updateMessage();
-      },
-
-      filters: {
-        ignoreDetails: function(title){
-          if(title!="orderInfo"){return title}
-        },
-        ignoreContent: function(content){
-          if(content.length>40){return null}
-          return content
-        },
-        getContent: function(content){
-          if(content.length>40){return content}
-        }
+      clearMessage: function(){
+        var self = this;
+        document.getElementById("searchOrder").value="";
       }
 
-})
-    myVue.filter('myReverse', function (value) {
-  return value.split('').reverse().join('')
-    })
+    },
 
-  </script>
+    created:function(){
+      this.updateMessage();
+    },
+
+    filters: {
+      ignoreDetails: function(title){
+        if(title!="orderInfo"){return title}
+      },
+      ignoreContent: function(content){
+        if(content.length>40){return null}
+        return content
+      },
+      getContent: function(content){
+        if(content.length>40){return content}
+      }
+    }
+
+  })
+  myVue.filter('myReverse', function (value) {
+    return value.split('').reverse().join('')
+  })
+
+</script>
   </body>
 </html>
