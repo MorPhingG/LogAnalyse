@@ -51,13 +51,11 @@ def toListForSql(logDict):
         logListInsert[i].append(str(logDict[i]))
     return logListInsert
 
-def to_json(data):
-    if data==[]:
-        return 0
-    print(data)
-    Dict = [{} for i in range(len(data))]
+def toJson(data):
+    lenData = len(data)
+    Dict = [{} for i in range(lenData)]
     head = ["createTime", "orderStatus", "userId", "orderCode", "orderInfo"]
-    for i in range(len(data)):
+    for i in range(lenData):
         Dict[i] = dict(map(lambda a,b:[a,b], head, data[i]))
     return json.dumps(Dict)
 

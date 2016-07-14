@@ -1,4 +1,3 @@
-
 var myVue = new Vue({
   el: '#myContainer',
   data: {
@@ -12,28 +11,7 @@ var myVue = new Vue({
       return Object.keys(this.data[0])
     }
   },
-
   methods: {
-    updateMessage: function () {
-      var self = this;
-      this.$http.get('/orders').then(function (res) {
-//        console.log(res.data);
-        try {
-          self.data = JSON.parse(res.data);
-          console.log(self.data[2].createTime);
-          self.data.sort(function(a,b){
-            return b.createTime>a.createTime?1:-1;
-          });
-//          this.spliceData(this.data)
-        } catch (e) {
-          console.log(e);
-          alert("出错了");
-        }
-      }, function (esrr) {
-        console.error(err);
-        alert("出错了");
-      });
-    },
     postMessage: function () {
       var self = this;
       self.searchQuery = document.getElementById("searchOrder").value
@@ -51,11 +29,29 @@ var myVue = new Vue({
       var self = this;
       document.getElementById("searchOrder").value="";
     }
-
   },
 
   created:function(){
-    this.updateMessage();
+//      this.updateMessage();
+    pageIndex = document.URL.split('/')[3]
+    if(pageIndex==""){
+      pageIndex = "1";
+    }
+    console.log(pageIndex)
+    var self = this;
+    this.$http.post('/orders?pageIndex='+pageIndex).then(function (res) {
+//        console.log(res.data);
+      try {
+        self.data = JSON.parse(res.data);
+        console.log(self.data[2].createTime);
+        self.data.sort(function(a,b){
+          return b.createTime>a.createTime?1:-1;})
+        //        console.log(res.data);
+      } catch (e) {
+        console.log(e);
+        alert("出错了");
+      }
+    });
   },
 
   filters: {

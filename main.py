@@ -9,8 +9,6 @@ logList = getlog('boxfish-online-order-public.log')
 logDict = toDict(logList)
 logListInsert = toListForSql(logDict)
 
-app = Flask(__name__)
-
 # cx = sqlite3.connect("./log.db")
 # cu = cx.cursor()
 # cu.execute("create table logOrder (id INTEGER PRIMARY KEY AUTOINCREMENT, createTime datetime, orderStatus varchar(30), userId int, "
@@ -33,29 +31,30 @@ app = Flask(__name__)
 #     cu.execute("select * from catalog where id = ?" , post_id)
 #     return
 
-@app.route('/', methods=['POST','GET'])
-def index():
-    if(request.method=="POST"):
-        cx = sqlite3.connect("./test.db")
-        cu = cx.cursor()
-        cx.commit()
-        postId = request.form.get('searchQuery','0')
-        # print(postId)
-        cu.execute("select createTime, orderStatus, userId, orderCode, orderInfo from catalog where id=?",postId)
-        cx.commit()
-        result = to_json(cu.fetchall())
-        return(result)
-    print("hello")
-    return app.send_static_file('LogAnalyse.html')
-
+app = Flask(__name__)
 app._static_folder="static"
 
-@app.route('/orders')
+
+@app.route('/')
+def index():
+    return app.send_static_file('LogAnalyse.html')
+
+@app.route('/<int:pageIndex>')
+def indexPagination(pageIndex):
+    return app.send_static_file('LogAnalyse.html')
+
+@app.route('/orders', methods=['POST'])
 def orders():
     cx = sqlite3.connect("./log.db")
     cu = cx.cursor()
-    cu.execute("select createTime, orderStatus, userId, orderCode, orderInfo from logOrder")
-    return to_json(cu.fetchall())
+    cu.execute("select createTime, orderStatus, userId, orderCode, orderInfo from logOrder ORDER BY createTime DESC")
+    dataSqlite = cu.fetchall()
+    if request.method == "POST":
+        pageIndex = int(request.args.get('pageIndex',1))
+        print(pageIndex*10-10)
+        print(pageIndex*10)
+        return toJson(dataSqlite[pageIndex*10-10:pageIndex*10])
+    # return toJson(dataSqlite)
 
 @app.route('/orders/order', methods=['POST'])
 def order():
@@ -69,10 +68,10 @@ def order():
     # cu.execute("select * from logOrder where userId=?", userId)
     cu.execute("select createTime, orderStatus, userId, orderCode, orderInfo from logOrder where (userId=" + userId + ") or (orderCode=" + "'"+userIdStr+"')")
     cx.commit()
-    result = to_json(cu.fetchall())
+    result = toJson(cu.fetchall())
     return(result)
 
 if __name__ == "__main__":
     app.run(debug=True)
-
+    # app.run()
 
